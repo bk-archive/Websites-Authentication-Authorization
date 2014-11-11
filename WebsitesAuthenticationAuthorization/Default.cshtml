@@ -1,0 +1,55 @@
+﻿@{
+    Layout = null;
+
+    var logOutURL = Environment.GetEnvironmentVariable("WEBSITE_AUTH_LOGOUT_PATH");
+}
+
+@using System.Security.Claims
+@using System.Threading
+@using System.Web.Configuration
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AAD Auth Testing</title>
+</head>
+<body style="font-family:'Segoe UI'">
+    <div>
+        @{
+            var claimsPrincipal = Thread.CurrentPrincipal as ClaimsPrincipal;
+            if (claimsPrincipal != null && claimsPrincipal.Identity.IsAuthenticated)
+            {
+                <h2 style="color:green">AAD Authentication Succeeded!</h2>
+                <br />
+                <a href="#">Click Here to Log-Out</a>
+                
+                <div><span><strong>Principal Name:</strong><br />@claimsPrincipal.Identity.Name</span></div>
+                <br />
+                <div><span><strong>x-ms-client-principal-name:</strong><br />@Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"]</span></div>
+                <br/>
+                <div><strong>Raw Claims</strong></div>
+                <table border="1">
+                    <tbody>
+                        @foreach (var claim in claimsPrincipal.Claims)
+                        {
+                        <tr>
+                            <td>@claim.Type</td>
+                            <td>@claim.Value</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                <br />
+                <div><span><a href="@WebConfigurationManager.AppSettings["WEBSITE_AUTH_LOGOUT_PATH"]">Logout</a></span></div>
+            }
+            else
+            {
+                <div style="color:red">AAD Authentication Failed!</div>
+            }
+        }
+    </div>
+
+</body>
+</html>
