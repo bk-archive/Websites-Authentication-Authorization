@@ -1,13 +1,10 @@
 ﻿@{
     Layout = null;
-
-    var logOutURL = Environment.GetEnvironmentVariable("WEBSITE_AUTH_LOGOUT_PATH");
 }
 
 @using System.Security.Claims
 @using System.Threading
 @using System.Web.Configuration
-
 
 <!DOCTYPE html>
 <html>
@@ -22,10 +19,8 @@
             if (claimsPrincipal != null && claimsPrincipal.Identity.IsAuthenticated)
             {
                 <h2 style="color:green">AAD Authentication Succeeded!</h2>
-                <br />
-                <a href="@logOutURL">Click Here to Log-Out</a>
-                
                 <div><span><strong>Principal Name:</strong><br />@claimsPrincipal.Identity.Name</span></div>
+                <div><span><a href="@WebConfigurationManager.AppSettings["WEBSITE_AUTH_LOGOUT_PATH"]">Logout</a></span></div>
                 <br />
                 <div><span><strong>x-ms-client-principal-name:</strong><br />@Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"]</span></div>
                 <br/>
@@ -42,13 +37,29 @@
                     </tbody>
                 </table>
                 <br />
-                <div><span><a href="@WebConfigurationManager.AppSettings["WEBSITE_AUTH_LOGOUT_PATH"]">Logout</a></span></div>
             }
             else
             {
-                <div style="color:red">AAD Authentication Failed!</div>
+                <div style="color:red">Current request is unauthenticated!</div>
             }
         }
+    </div>
+    <br/>
+    <div>
+        <div><strong>Raw HTTP Headers</strong></div>
+        <table border="1">
+            <tbody>
+                @{
+                    foreach (string header in this.Request.Headers)
+                    {
+                        <tr>
+                            <td>@header</td>
+                            <td>@this.Request.Headers[header]</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
     </div>
 
 </body>
