@@ -2,7 +2,7 @@
     Layout = null;
 
     var appSettings = System.Configuration.ConfigurationManager.AppSettings;
-    var backgroundColor = appSettings["background"];
+    var backgroundColor = appSettings["background"]== null? "#000000": appSettings["background"];
 }
 
 @using System.Security.Claims
@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>AAD Auth Testing</title>
 </head>
-<body style="background: @backgroundColor;">
+<body style="font-family:Arial; background: @backgroundColor; color:white;">
     <div>
         @{
             var claimsPrincipal = Thread.CurrentPrincipal as ClaimsPrincipal;
@@ -26,16 +26,16 @@
                 <div><span><a href="@WebConfigurationManager.AppSettings["WEBSITE_AUTH_LOGOUT_PATH"]">Logout</a></span></div>
                 <br />
                 <div><span><strong>x-ms-client-principal-name:</strong><br />@Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"]</span></div>
-                <br/>
+                <br />
                 <div><strong>Raw Claims</strong></div>
                 <table border="1">
                     <tbody>
                         @foreach (var claim in claimsPrincipal.Claims)
                         {
-                        <tr>
-                            <td>@claim.Type</td>
-                            <td>@claim.Value</td>
-                        </tr>
+                            <tr>
+                                <td>@claim.Type</td>
+                                <td>@claim.Value</td>
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -47,7 +47,7 @@
             }
         }
     </div>
-    <br/>
+    <br />
     <div>
         <div><strong>Raw HTTP Headers</strong></div>
         <table border="1">
