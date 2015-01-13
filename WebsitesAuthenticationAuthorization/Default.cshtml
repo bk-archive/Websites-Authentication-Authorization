@@ -1,5 +1,8 @@
 ﻿@{
     Layout = null;
+
+    var appSettings = System.Configuration.ConfigurationManager.AppSettings;
+    var backgroundColor = appSettings["background"];
 }
 
 @using System.Security.Claims
@@ -12,7 +15,7 @@
     <meta name="viewport" content="width=device-width" />
     <title>AAD Auth Testing</title>
 </head>
-<body style="font-family:'Segoe UI'">
+<body style="background: @backgroundColor;">
     <div>
         @{
             var claimsPrincipal = Thread.CurrentPrincipal as ClaimsPrincipal;
