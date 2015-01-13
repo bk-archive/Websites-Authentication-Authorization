@@ -18,11 +18,10 @@ else
 	$RG_Location = "West Us"
 
 	#Web Hosting Plan Properties
-	$WHP1_Name = "WHP" + $Random2
+	$WHP_Name = "WHP" + $Random2
 
 	#Website Properties
-	$WS1_Name = "EasyAuthDemo" +  $Random2
-	$WS1_Hostname = $WS1_Name + ".azurewebsites.net"
+	$WS_Name = "EasyAuthDemo" +  $Random2
 	
 	#Provition Resources From Template
 	#This will create:
@@ -34,7 +33,7 @@ else
 	Write-Host "Creating Resource Group, Web Hosting Plan, Sites and Slots..." -ForegroundColor Green 
 	try 
 	{ 
-		New-AzureResourceGroup -name $RG_Name -location $RG_Location -TemplateFile .\template.json -resourceLocation $RG_Location -whp $WHP1_Name -siteName $WS1_Name
+		New-AzureResourceGroup -name $RG_Name -location $RG_Location -TemplateFile .\template.json -resourceLocation $RG_Location -whp $WHP_Name -siteName $WS_Name
 		[System.Console]::Beep(400,1500)
 	}
 	catch 
