@@ -3,6 +3,7 @@
 
     var appSettings = System.Configuration.ConfigurationManager.AppSettings;
     var backgroundColor = appSettings["background"]== null? "#000000": appSettings["background"];
+    var secretmessage = appSettings["secret"] == null ? "" : appSettings["secret"];
 }
 
 @using System.Security.Claims
@@ -19,9 +20,10 @@
     <div>
         @{
             var claimsPrincipal = Thread.CurrentPrincipal as ClaimsPrincipal;
+            <h1> @secretmessage </h1>
             if (claimsPrincipal != null && claimsPrincipal.Identity.IsAuthenticated)
             {
-                <h2 style="color:green">AAD Authentication Succeeded!</h2>
+                <h2 style="color:red">AAD Authentication Succeeded!</h2>
                 <div><span><strong>Principal Name:</strong><br />@claimsPrincipal.Identity.Name</span></div>
                 <div><span><a href="@WebConfigurationManager.AppSettings["WEBSITE_AUTH_LOGOUT_PATH"]">Logout</a></span></div>
                 <br />
@@ -43,7 +45,7 @@
             }
             else
             {
-                <div style="color:red">Current request is unauthenticated!</div>
+                <div style="color:blue">Current request is unauthenticated!</div>
             }
         }
     </div>
